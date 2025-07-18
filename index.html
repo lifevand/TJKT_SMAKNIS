@@ -246,7 +246,7 @@
             background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
             color: white;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Added transform transition */
             transform: translateY(100%); /* Start hidden below */
         }
 
@@ -268,7 +268,7 @@
             padding: 12px;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, border-left 0.3s ease, padding-left 0.3s ease; /* Added transitions */
         }
 
         .video-item:hover {
@@ -287,6 +287,10 @@
             object-fit: cover;
             border-radius: 4px;
             flex-shrink: 0; /* Prevent thumbnail from shrinking */
+            background: #e2e8f0; /* Default background for icon thumbnail */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         @media (max-width: 768px) {
@@ -773,8 +777,9 @@
     <div id="albumPage" class="page">
         <div class="container mx-auto px-4 py-8">
             <div class="text-center mb-8 animate-fadeIn">
-                <h1 class="text-4xl font-bold text-gray-800 mb-4">Album Aktivitas</h1>
-                <p class="text-xl text-gray-600">Dokumentasi kegiatan dan pencapaian TJKT</p>
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Album Kami</h1>
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4 underline">Masa-masa MPLS 2025</h2>
+                <p class="text-lg text-gray-600">Dokumentasi kegiatan dan pencapaian TJKT</p>
             </div>
 
             <div class="mb-6">
@@ -1293,36 +1298,27 @@
         function initializeData() {
             // Initialize photo gallery with local paths
             photoGallery = [
-                // Existing photos (you can replace these if 'aktivitasX.png' are no longer used)
-                { id: 1, src: 'images/aktivitas1.png', title: 'Workshop Jaringan', category: 'workshop' },
-                { id: 2, src: 'images/aktivitas2.png', title: 'Kompetisi Programming', category: 'competition' },
-                { id: 3, src: 'images/aktivitas3.png', title: 'Praktikum Lab', category: 'lab' },
-                { id: 4, src: 'images/aktivitas4.png', title: 'Seminar Teknologi', category: 'workshop' },
-                { id: 5, src: 'images/aktivitas5.png', title: 'Hackathon', category: 'competition' },
-                { id: 6, src: 'images/aktivitas6.png', title: 'Konfigurasi Server', category: 'lab' },
+                // ==== FOTO MPLS 2025 ====
+                { id: 1, src: 'images/foto1.png', title: 'MPLS 2025 - Sesi Pembukaan', category: 'mpls' },
+                { id: 2, src: 'images/foto2.png', title: 'MPLS 2025 - Kegiatan Kelompok', category: 'mpls' },
+                { id: 3, src: 'images/foto3.png', title: 'MPLS 2025 - Perkenalan Angkatan', category: 'mpls' },
+                { id: 4, src: 'images/foto4.png', title: 'MPLS 2025 - Games Interaktif', category: 'mpls' },
+                { id: 5, src: 'images/foto5.png', title: 'MPLS 2025 - Lomba Keterampilan', category: 'mpls' },
+                { id: 6, src: 'images/foto6.png', title: 'MPLS 2025 - Penutupan Acara', category: 'mpls' },
                 
-                // === Tambahan Foto Sesuai Permintaan Anda ===
-                { id: 7, src: 'images/foto1.png', title: 'Masa MPLS 2025 - Hari 1', category: 'mpls' },
-                { id: 8, src: 'images/foto2.png', title: 'Masa MPLS 2025 - Hari 2', category: 'mpls' },
-                { id: 9, src: 'images/foto3.png', title: 'Masa MPLS 2025 - Sesi Perkenalan', category: 'mpls' },
-                { id: 10, src: 'images/foto4.png', title: 'Masa MPLS 2025 - Lomba Kelompok', category: 'mpls' },
-                { id: 11, src: 'images/foto5.png', title: 'Masa MPLS 2025 - Penutupan', category: 'mpls' },
-                { id: 12, src: 'images/foto6.png', title: 'Masa MPLS 2025 - Momen Kebersamaan', category: 'mpls' }
+                // Tambahan foto lama jika masih ingin ditampilkan (opsional)
+                { id: 7, src: 'images/aktivitas1.png', title: 'Workshop Jaringan', category: 'workshop' },
+                { id: 8, src: 'images/aktivitas2.png', title: 'Kompetisi Programming', category: 'competition' },
+                { id: 9, src: 'images/aktivitas3.png', title: 'Praktikum Lab', category: 'lab' },
+                { id: 10, src: 'images/aktivitas4.png', title: 'Seminar Teknologi', category: 'workshop' },
+                { id: 11, src: 'images/aktivitas5.png', title: 'Hackathon', category: 'competition' },
+                { id: 12, src: 'images/aktivitas6.png', title: 'Konfigurasi Server', category: 'lab' }
             ];
 
             // Initialize video playlist with local paths
             videoPlaylist = [
-                // Existing videos (you can replace these if 'videoX.mp4' are no longer used)
-                { id: 1, src: 'videos/video1.mp4', title: 'Workshop Jaringan Komputer', description: 'Dokumentasi workshop konfigurasi router dan switch menggunakan peralatan Cisco.' },
-                { id: 2, src: 'videos/video2.mp4', title: 'Kompetisi Programming', description: 'Highlight kompetisi programming tingkat nasional yang diikuti mahasiswa TJKT.' },
-                { id: 3, src: 'videos/video3.mp4', title: 'Praktikum Lab Network', description: 'Kegiatan praktikum di laboratorium jaringan komputer.' },
-                { id: 4, src: 'videos/video4.mp4', title: 'Seminar Cyber Security', description: 'Seminar tentang keamanan siber dan praktik terbaik.' },
-
-                // === Tambahan Video Sesuai Permintaan Anda ===
-                // Untuk thumbnail, Anda bisa membuat gambar JPG/PNG terpisah untuk setiap video
-                // Misalnya: { id: 5, src: 'videos/videos1.mp4', thumbnail: 'images/thumbnail_videos1.jpg', title: 'Video Kreatif Mahasiswa TJKT', description: 'Kompilasi kegiatan kreatif dan inovasi dari mahasiswa TJKT.' }
-                // Jika tidak ada thumbnail, akan menggunakan ikon placeholder default.
-                { id: 5, src: 'videos/videos1.mp4', title: 'Video Kreatif Mahasiswa TJKT', description: 'Kompilasi kegiatan kreatif dan inovasi dari mahasiswa TJKT, menampilkan karya terbaik.' }
+                // HANYA SATU VIDEO SEPERTI PERMINTAAN
+                { id: 1, src: 'videos/videos1.mp4', title: 'Jedag-jedug masa-masa MPLS', description: 'Mengenang masa lalu, kumpulan momen seru selama kegiatan MPLS.' }
             ];
 
             // Initialize members list
@@ -1342,7 +1338,10 @@
             const gallery = document.getElementById('photoGallery');
             gallery.innerHTML = ''; // Clear existing items
 
-            photoGallery.forEach(photo => {
+            // Filter photos to only show MPLS for now, or 'all' if you want all categories visible
+            const mplsPhotos = photoGallery.filter(photo => photo.category === 'mpls');
+
+            mplsPhotos.forEach(photo => { // Loop through filtered MPLS photos
                 const item = document.createElement('div');
                 item.className = 'gallery-item card-hover animate-fadeIn group'; // Added 'group' class for Tailwind's group-hover utility
                 item.setAttribute('data-category', photo.category);
@@ -1361,7 +1360,7 @@
             const playlist = document.getElementById('videoPlaylist');
             playlist.innerHTML = ''; // Clear existing items
 
-            // Set the first video as the main video by default
+            // Set the first (and only) video as the main video by default
             if (videoPlaylist.length > 0) {
                 playVideo(videoPlaylist[0], 0); // Play the first video in the list
             } else {
@@ -1375,8 +1374,8 @@
                 const item = document.createElement('div');
                 item.className = `video-item ${index === 0 ? 'active' : ''}`; // Mark first video as active
                 item.innerHTML = `
-                    <div class="thumbnail bg-gray-200 flex items-center justify-center">
-                        ${video.thumbnail ? `<img src="${video.thumbnail}" alt="Thumbnail" class="thumbnail">` : '<i class="fas fa-play text-gray-400 text-xl"></i>'}
+                    <div class="thumbnail">
+                        ${video.thumbnail ? `<img src="${video.thumbnail}" alt="Thumbnail" class="w-full h-full object-cover rounded-sm">` : '<i class="fas fa-play text-gray-400 text-xl"></i>'}
                     </div>
                     <div class="flex-1"> <!-- Use flex-1 to make text take available space -->
                         <h4 class="font-medium text-gray-800 text-sm">${video.title}</h4>
@@ -1528,29 +1527,45 @@
         }
 
         function filterAlbum(category) {
-            const buttons = document.querySelectorAll('#albumPage button');
-            buttons.forEach(btn => {
+            // Remove active class from all buttons
+            document.querySelectorAll('#albumPage button').forEach(btn => {
                 btn.classList.remove('bg-blue-600', 'text-white');
                 btn.classList.add('bg-gray-200', 'text-gray-700');
             });
 
-            // Find the button that was clicked using event.target
+            // Add active class to the clicked button
             const clickedButton = event.target.closest('button');
             if (clickedButton) {
                 clickedButton.classList.remove('bg-gray-200', 'text-gray-700');
                 clickedButton.classList.add('bg-blue-600', 'text-white');
             }
 
+            const gallery = document.getElementById('photoGallery');
+            gallery.innerHTML = ''; // Clear current photos
 
-            const items = document.querySelectorAll('.gallery-item');
-            items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
+            // Filter and render photos based on category
+            let photosToDisplay = [];
+            if (category === 'all') {
+                photosToDisplay = photoGallery;
+            } else {
+                photosToDisplay = photoGallery.filter(photo => photo.category === category);
+            }
+
+            photosToDisplay.forEach(photo => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item card-hover animate-fadeIn group';
+                item.setAttribute('data-category', photo.category);
+                item.innerHTML = `
+                    <img src="${photo.src}" alt="${photo.title}" class="w-full h-full object-cover">
+                    <div class="overlay-text">
+                        <p class="font-medium text-sm">${photo.title}</p>
+                    </div>
+                `;
+                item.onclick = () => openLightbox(photo.src);
+                gallery.appendChild(item);
             });
         }
+
 
         function filterMembers(filter) {
             const buttons = document.querySelectorAll('#memberPage button');
