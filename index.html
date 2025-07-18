@@ -222,6 +222,7 @@
             border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
+            position: relative; /* Added for overlay effect */
             transition: transform 0.3s ease;
         }
 
@@ -234,6 +235,24 @@
             height: 100%;
             object-fit: cover;
         }
+
+        /* Styles for gallery item text overlay on hover */
+        .gallery-item .overlay-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .overlay-text {
+            opacity: 1;
+        }
+
 
         .video-playlist {
             max-height: 400px;
@@ -253,6 +272,13 @@
 
         .video-item.active {
             background: rgba(102, 126, 234, 0.2);
+        }
+
+        .video-item .thumbnail {
+            width: 80px; /* Adjust thumbnail size */
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
         }
 
         @media (max-width: 768px) {
@@ -747,6 +773,9 @@
                 <div class="flex flex-wrap gap-4 justify-center">
                     <button onclick="filterAlbum('all')" class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
                         <i class="fas fa-images mr-2"></i>Semua
+                    </button>
+                    <button onclick="filterAlbum('mpls')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-users mr-2"></i>MPLS
                     </button>
                     <button onclick="filterAlbum('workshop')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
                         <i class="fas fa-tools mr-2"></i>Workshop
@@ -1262,7 +1291,14 @@
                 { id: 4, src: 'images/aktivitas4.png', title: 'Seminar Teknologi', category: 'workshop' },
                 { id: 5, src: 'images/aktivitas5.png', title: 'Hackathon', category: 'competition' },
                 { id: 6, src: 'images/aktivitas6.png', title: 'Konfigurasi Server', category: 'lab' },
-                // Add more photos here
+                
+                // === Tambahan Foto Sesuai Permintaan Anda ===
+                { id: 7, src: 'images/foto1.png', title: 'Masa MPLS 2025 Hari 1', category: 'mpls' },
+                { id: 8, src: 'images/foto2.png', title: 'Masa MPLS 2025 Hari 2', category: 'mpls' },
+                { id: 9, src: 'images/foto3.png', title: 'Masa MPLS 2025 Hari 3', category: 'mpls' },
+                { id: 10, src: 'images/foto4.png', title: 'Workshop Jaringan Lanjutan', category: 'workshop' },
+                { id: 11, src: 'images/foto5.png', title: 'Lomba Desain Jaringan', category: 'competition' },
+                { id: 12, src: 'images/foto6.png', title: 'Praktikum Robotika Jaringan', category: 'lab' }
             ];
 
             // Initialize video playlist with local paths
@@ -1271,7 +1307,9 @@
                 { id: 2, src: 'videos/video2.mp4', title: 'Kompetisi Programming', description: 'Highlight kompetisi programming tingkat nasional yang diikuti mahasiswa TJKT.' },
                 { id: 3, src: 'videos/video3.mp4', title: 'Praktikum Lab Network', description: 'Kegiatan praktikum di laboratorium jaringan komputer.' },
                 { id: 4, src: 'videos/video4.mp4', title: 'Seminar Cyber Security', description: 'Seminar tentang keamanan siber dan praktik terbaik.' },
-                // Add more videos here
+
+                // === Tambahan Video Sesuai Permintaan Anda ===
+                { id: 5, src: 'videos/videos1.mp4', title: 'Video Kreatif Mahasiswa TJKT', description: 'Kompilasi kegiatan kreatif dan inovasi dari mahasiswa TJKT.' }
             ];
 
             // Initialize members list
@@ -1293,11 +1331,12 @@
 
             photoGallery.forEach(photo => {
                 const item = document.createElement('div');
-                item.className = 'gallery-item card-hover animate-fadeIn'; // Added animate-fadeIn for effect
+                // Added 'group' class for the hover effect on the overlay-text
+                item.className = 'gallery-item card-hover animate-fadeIn group'; 
                 item.setAttribute('data-category', photo.category);
                 item.innerHTML = `
                     <img src="${photo.src}" alt="${photo.title}" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div class="overlay-text">
                         <p class="font-medium text-sm">${photo.title}</p>
                     </div>
                 `;
@@ -1316,8 +1355,8 @@
             } else {
                 // Clear main video display if no videos
                 document.getElementById('mainVideo').src = '';
-                document.getElementById('videoTitle').textContent = 'No Video Available';
-                document.getElementById('videoDescription').textContent = 'Please add videos to the playlist.';
+                document.getElementById('videoTitle').textContent = 'Tidak Ada Video Tersedia';
+                document.getElementById('videoDescription').textContent = 'Silakan tambahkan video ke daftar putar.';
             }
 
             videoPlaylist.forEach((video, index) => {
@@ -1326,7 +1365,7 @@
                 item.innerHTML = `
                     <div class="flex items-center space-x-3">
                         <div class="w-16 h-12 bg-gray-200 rounded flex items-center justify-center overflow-hidden">
-                            <!-- You might want a thumbnail here instead of just an icon -->
+                            <!-- Placeholder for thumbnail. For actual thumbnails, you'd generate them or specify a path -->
                             <i class="fas fa-play text-gray-400"></i> 
                         </div>
                         <div>
