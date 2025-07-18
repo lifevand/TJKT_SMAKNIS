@@ -247,10 +247,12 @@
             color: white;
             opacity: 0;
             transition: opacity 0.3s ease;
+            transform: translateY(100%); /* Start hidden below */
         }
 
         .gallery-item:hover .overlay-text {
             opacity: 1;
+            transform: translateY(0); /* Slide up on hover */
         }
 
 
@@ -260,6 +262,9 @@
         }
 
         .video-item {
+            display: flex; /* Ensure flexbox for thumbnail alignment */
+            align-items: center; /* Center items vertically */
+            gap: 12px; /* Space between thumbnail and text */
             padding: 12px;
             border-radius: 8px;
             cursor: pointer;
@@ -272,6 +277,8 @@
 
         .video-item.active {
             background: rgba(102, 126, 234, 0.2);
+            border-left: 4px solid #667eea; /* Highlight active video */
+            padding-left: 8px; /* Adjust padding due to border */
         }
 
         .video-item .thumbnail {
@@ -279,6 +286,7 @@
             height: 60px;
             object-fit: cover;
             border-radius: 4px;
+            flex-shrink: 0; /* Prevent thumbnail from shrinking */
         }
 
         @media (max-width: 768px) {
@@ -1285,6 +1293,7 @@
         function initializeData() {
             // Initialize photo gallery with local paths
             photoGallery = [
+                // Existing photos (you can replace these if 'aktivitasX.png' are no longer used)
                 { id: 1, src: 'images/aktivitas1.png', title: 'Workshop Jaringan', category: 'workshop' },
                 { id: 2, src: 'images/aktivitas2.png', title: 'Kompetisi Programming', category: 'competition' },
                 { id: 3, src: 'images/aktivitas3.png', title: 'Praktikum Lab', category: 'lab' },
@@ -1293,23 +1302,27 @@
                 { id: 6, src: 'images/aktivitas6.png', title: 'Konfigurasi Server', category: 'lab' },
                 
                 // === Tambahan Foto Sesuai Permintaan Anda ===
-                { id: 7, src: 'images/foto1.png', title: 'Masa MPLS 2025 Hari 1', category: 'mpls' },
-                { id: 8, src: 'images/foto2.png', title: 'Masa MPLS 2025 Hari 2', category: 'mpls' },
-                { id: 9, src: 'images/foto3.png', title: 'Masa MPLS 2025 Hari 3', category: 'mpls' },
-                { id: 10, src: 'images/foto4.png', title: 'Workshop Jaringan Lanjutan', category: 'workshop' },
-                { id: 11, src: 'images/foto5.png', title: 'Lomba Desain Jaringan', category: 'competition' },
-                { id: 12, src: 'images/foto6.png', title: 'Praktikum Robotika Jaringan', category: 'lab' }
+                { id: 7, src: 'images/foto1.png', title: 'Masa MPLS 2025 - Hari 1', category: 'mpls' },
+                { id: 8, src: 'images/foto2.png', title: 'Masa MPLS 2025 - Hari 2', category: 'mpls' },
+                { id: 9, src: 'images/foto3.png', title: 'Masa MPLS 2025 - Sesi Perkenalan', category: 'mpls' },
+                { id: 10, src: 'images/foto4.png', title: 'Masa MPLS 2025 - Lomba Kelompok', category: 'mpls' },
+                { id: 11, src: 'images/foto5.png', title: 'Masa MPLS 2025 - Penutupan', category: 'mpls' },
+                { id: 12, src: 'images/foto6.png', title: 'Masa MPLS 2025 - Momen Kebersamaan', category: 'mpls' }
             ];
 
             // Initialize video playlist with local paths
             videoPlaylist = [
+                // Existing videos (you can replace these if 'videoX.mp4' are no longer used)
                 { id: 1, src: 'videos/video1.mp4', title: 'Workshop Jaringan Komputer', description: 'Dokumentasi workshop konfigurasi router dan switch menggunakan peralatan Cisco.' },
                 { id: 2, src: 'videos/video2.mp4', title: 'Kompetisi Programming', description: 'Highlight kompetisi programming tingkat nasional yang diikuti mahasiswa TJKT.' },
                 { id: 3, src: 'videos/video3.mp4', title: 'Praktikum Lab Network', description: 'Kegiatan praktikum di laboratorium jaringan komputer.' },
                 { id: 4, src: 'videos/video4.mp4', title: 'Seminar Cyber Security', description: 'Seminar tentang keamanan siber dan praktik terbaik.' },
 
                 // === Tambahan Video Sesuai Permintaan Anda ===
-                { id: 5, src: 'videos/videos1.mp4', title: 'Video Kreatif Mahasiswa TJKT', description: 'Kompilasi kegiatan kreatif dan inovasi dari mahasiswa TJKT.' }
+                // Untuk thumbnail, Anda bisa membuat gambar JPG/PNG terpisah untuk setiap video
+                // Misalnya: { id: 5, src: 'videos/videos1.mp4', thumbnail: 'images/thumbnail_videos1.jpg', title: 'Video Kreatif Mahasiswa TJKT', description: 'Kompilasi kegiatan kreatif dan inovasi dari mahasiswa TJKT.' }
+                // Jika tidak ada thumbnail, akan menggunakan ikon placeholder default.
+                { id: 5, src: 'videos/videos1.mp4', title: 'Video Kreatif Mahasiswa TJKT', description: 'Kompilasi kegiatan kreatif dan inovasi dari mahasiswa TJKT, menampilkan karya terbaik.' }
             ];
 
             // Initialize members list
@@ -1331,8 +1344,7 @@
 
             photoGallery.forEach(photo => {
                 const item = document.createElement('div');
-                // Added 'group' class for the hover effect on the overlay-text
-                item.className = 'gallery-item card-hover animate-fadeIn group'; 
+                item.className = 'gallery-item card-hover animate-fadeIn group'; // Added 'group' class for Tailwind's group-hover utility
                 item.setAttribute('data-category', photo.category);
                 item.innerHTML = `
                     <img src="${photo.src}" alt="${photo.title}" class="w-full h-full object-cover">
@@ -1351,7 +1363,7 @@
 
             // Set the first video as the main video by default
             if (videoPlaylist.length > 0) {
-                playVideo(videoPlaylist[0], 0);
+                playVideo(videoPlaylist[0], 0); // Play the first video in the list
             } else {
                 // Clear main video display if no videos
                 document.getElementById('mainVideo').src = '';
@@ -1361,17 +1373,14 @@
 
             videoPlaylist.forEach((video, index) => {
                 const item = document.createElement('div');
-                item.className = `video-item ${index === 0 ? 'active' : ''}`;
+                item.className = `video-item ${index === 0 ? 'active' : ''}`; // Mark first video as active
                 item.innerHTML = `
-                    <div class="flex items-center space-x-3">
-                        <div class="w-16 h-12 bg-gray-200 rounded flex items-center justify-center overflow-hidden">
-                            <!-- Placeholder for thumbnail. For actual thumbnails, you'd generate them or specify a path -->
-                            <i class="fas fa-play text-gray-400"></i> 
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-gray-800 text-sm">${video.title}</h4>
-                            <p class="text-xs text-gray-600">${video.description.substring(0, 50)}...</p>
-                        </div>
+                    <div class="thumbnail bg-gray-200 flex items-center justify-center">
+                        ${video.thumbnail ? `<img src="${video.thumbnail}" alt="Thumbnail" class="thumbnail">` : '<i class="fas fa-play text-gray-400 text-xl"></i>'}
+                    </div>
+                    <div class="flex-1"> <!-- Use flex-1 to make text take available space -->
+                        <h4 class="font-medium text-gray-800 text-sm">${video.title}</h4>
+                        <p class="text-xs text-gray-600">${video.description.substring(0, 50)}...</p>
                     </div>
                 `;
                 item.onclick = () => playVideo(video, index);
@@ -1582,12 +1591,15 @@
 
         function playVideo(video, index) {
             const mainVideo = document.getElementById('mainVideo');
+            const videoSource = mainVideo.querySelector('source'); // Get the source element
             const videoTitle = document.getElementById('videoTitle');
             const videoDescription = document.getElementById('videoDescription');
             
-            mainVideo.src = video.src;
+            // Set the new video source
+            videoSource.src = video.src;
             videoTitle.textContent = video.title;
             videoDescription.textContent = video.description;
+            
             mainVideo.load(); // Reload video for new source
             mainVideo.play(); // Auto-play new video
 
@@ -1595,7 +1607,11 @@
             document.querySelectorAll('.video-item').forEach(item => {
                 item.classList.remove('active');
             });
-            document.querySelectorAll('.video-item')[index].classList.add('active');
+            // Make sure the clicked item or the default first item is marked active
+            const activeItem = document.querySelectorAll('.video-item')[index];
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
         }
 
         function changeProfilePicture() {
