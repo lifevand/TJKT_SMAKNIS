@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TJKT - Teknik Jaringan Komputer dan Telekomunikasi</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-bg-2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .gradient-bg-3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .animate-slideUp {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .animate-slideDown {
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        }
+
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+        }
+
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        .stats-counter {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #667eea;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: #f3f4f6;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-playlist {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .video-item {
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .video-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .video-item.active {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .stats-counter {
+                font-size: 2rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="absolute top-4 right-4 text-white text-2xl cursor-pointer" onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
+        </div>
+        <img id="lightboxImg" src="" alt="Preview">
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-xl font-bold text-gray-800">Menu</h3>
+                <button onclick="toggleSidebar()" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <nav class="space-y-4">
+                <a href="#" onclick="showPage('dashboard')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-home text-blue-600"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="showPage('about')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-info-circle text-green-600"></i>
+                    <span>Tentang TJKT</span>
+                </a>
+                <a href="#" onclick="showPage('album')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-images text-purple-600"></i>
+                    <span>Album</span>
+                </a>
+                <a href="#" onclick="showPage('video')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-video text-red-600"></i>
+                    <span>Video</span>
+                </a>
+                <a href="#" onclick="showPage('profile')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-user text-indigo-600"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="#" onclick="showPage('statistics')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-chart-bar text-yellow-600"></i>
+                    <span>Statistik</span>
+                </a>
+                <a href="#" onclick="showPage('officer')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-users text-teal-600"></i>
+                    <span>Officer</span>
+                </a>
+                <a href="#" onclick="showPage('member')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-user-friends text-pink-600"></i>
+                    <span>Member</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Header -->
+    <header class="gradient-bg text-white py-4 px-6 sticky top-0 z-50">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleSidebar()" class="lg:hidden">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-bold">TJKT</h1>
+            </div>
+            <nav class="hidden lg:flex space-x-6">
+                <a href="#" onclick="showPage('dashboard')" class="nav-link px-3 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">Dashboard</a>
+                <a href="#" onclick="showPage('about')" class="nav-link px-3 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">Tentang</a>
+                <a href="#" onclick="showPage('album')" class="nav-link px-3 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">Album</a>
+                <a href="#" onclick="showPage('video')" class="nav-link px-3 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">Video</a>
+                <a href="#" onclick="showPage('profile')" class="nav-link px-3 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">Profile</a>
+                <a href="#" onclick="showPage('statistics')" class="nav-link px-3 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">Statistik</a>
+                <a href="#" onclick="showPage('officer')" class="nav-link px-3 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">Officer</a>
+                <a href="#" onclick="showPage('member')" class="nav-link px-3 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">Member</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <span id="userEmail" class="hidden text-sm"></span>
+                <button id="logoutBtn" onclick="logout()" class="hidden px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="min-h-screen flex items-center justify-center gradient-bg">
+            <div class="max-w-md w-full mx-4">
+                <div class="glass-effect rounded-2xl p-8 shadow-2xl animate-slideDown">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-network-wired text-3xl text-blue-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-white mb-2">TJKT Portal</h2>
+                        <p class="text-white text-opacity-80">Teknik Jaringan Komputer dan Telekomunikasi</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex border-b border-white border-opacity-30">
+                            <button id="loginTab" onclick="switchTab('login')" class="flex-1 py-3 text-center text-white font-medium border-b-2 border-white transition-colors">
+                                Login
+                            </button>
+                            <button id="registerTab" onclick="switchTab('register')" class="flex-1 py-3 text-center text-white text-opacity-60 font-medium border-b-2 border-transparent transition-colors">
+                                Daftar
+                            </button>
+                        </div>
+
+                        <form id="loginForm" onsubmit="handleLogin(event)">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-white text-sm font-medium mb-2">Email</label>
+                                    <input type="email" id="loginEmail" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                                </div>
+                                <div>
+                                    <label class="block text-white text-sm font-medium mb-2">Password</label>
+                                    <input type="password" id="loginPassword" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                                </div>
+                                <button type="submit" class="w-full bg-white text-blue-600 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                                    <i class="fas fa-sign-in-alt mr-2"></i>Login
+                                </button>
+                            </div>
+                        </form>
+
+                        <form id="registerForm" onsubmit="handleRegister(event)" class="hidden">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-white text-sm font-medium mb-2">Email</label>
+                                    <input type="email" id="registerEmail" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                                </div>
+                                <div>
+                                    <label class="block text-white text-sm font-medium mb-2">Password</label>
+                                    <input type="password" id="registerPassword" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                                </div>
+                                <div>
+                                    <label class="block text-white text-sm font-medium mb-2">Konfirmasi Password</label>
+                                    <input type="password" id="confirmPassword" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                                </div>
+                                <button type="submit" class="w-full bg-white text-blue-600 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                                    <i class="fas fa-user-plus mr-2"></i>Daftar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="gradient-bg rounded-2xl p-8 text-white mb-8 animate-fadeIn">
+                <h1 class="text-4xl font-bold mb-4">Selamat Datang di TJKT</h1>
+                <p class="text-xl text-white text-opacity-90">Teknik Jaringan Komputer dan Telekomunikasi</p>
+                <p class="mt-4 text-lg text-white text-opacity-80">Portal informasi lengkap tentang program studi TJKT, aktivitas, dan komunitas mahasiswa.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-slideUp">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-gray-600 text-sm font-medium">Total Mahasiswa</h3>
+                            <p class="text-3xl font-bold text-blue-600" id="totalStudents">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-slideUp" style="animation-delay: 0.1s;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-gray-600 text-sm font-medium">Kelulusan</h3>
+                            <p class="text-3xl font-bold text-green-600" id="graduationRate">0%</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-slideUp" style="animation-delay: 0.2s;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-gray-600 text-sm font-medium">Dosen</h3>
+                            <p class="text-3xl font-bold text-purple-600" id="totalTeachers">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chalkboard-teacher text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-slideUp" style="animation-delay: 0.3s;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-gray-600 text-sm font-medium">Sertifikat</h3>
+                            <p class="text-3xl font-bold text-orange-600" id="totalCertificates">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-certificate text-orange-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Aktivitas Terbaru</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-camera text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800">Workshop Jaringan</h4>
+                                <p class="text-sm text-gray-600">Pelatihan konfigurasi router dan switch</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-code text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800">Coding Competition</h4>
+                                <p class="text-sm text-gray-600">Lomba programming tingkat nasional</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-server text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800">Server Maintenance</h4>
+                                <p class="text-sm text-gray-600">Maintenance rutin server laboratorium</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Pengumuman</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+                            <h4 class="font-medium text-blue-800">Pendaftaran Magang</h4>
+                            <p class="text-sm text-blue-600 mt-1">Pendaftaran magang industri semester genap dibuka hingga 15 Desember 2024</p>
+                        </div>
+                        <div class="p-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                            <h4 class="font-medium text-green-800">Sertifikasi Cisco</h4>
+                            <p class="text-sm text-green-600 mt-1">Program sertifikasi Cisco CCNA dimulai Januari 2025</p>
+                        </div>
+                        <div class="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg">
+                            <h4 class="font-medium text-yellow-800">Upgrading Lab</h4>
+                            <p class="text-sm text-yellow-600 mt-1">Laboratorium akan ditutup 20-22 Desember untuk upgrading equipment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div id="aboutPage" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12 animate-fadeIn">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-4">Tentang TJKT</h1>
+                    <p class="text-xl text-gray-600">Teknik Jaringan Komputer dan Telekomunikasi</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white rounded-xl p-8 shadow-lg animate-slideUp">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-eye text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Visi</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Menjadi program studi unggulan dalam bidang teknik jaringan komputer dan telekomunikasi yang menghasilkan lulusan berkualitas, inovatif, dan siap menghadapi tantangan era digital.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg animate-slideUp" style="animation-delay: 0.2s;">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-bullseye text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Misi</h3>
+                        <ul class="text-gray-600 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                Menyelenggarakan pendidikan berkualitas tinggi
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                Mengembangkan penelitian dan inovasi
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                Melakukan pengabdian kepada masyarakat
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-12 animate-slideUp">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Kurikulum</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-700 mb-3">Mata Kuliah Inti</h4>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center">
+                                    <i class="fas fa-network-wired text-blue-600 mr-2"></i>
+                                    Jaringan Komputer
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-server text-blue-600 mr-2"></i>
+                                    Administrasi Server
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-shield-alt text-blue-600 mr-2"></i>
+                                    Keamanan Jaringan
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-wifi text-blue-600 mr-2"></i>
+                                    Teknologi Wireless
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-code text-blue-600 mr-2"></i>
+                                    Pemrograman Jaringan
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-700 mb-3">Mata Kuliah Pendukung</h4>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center">
+                                    <i class="fas fa-database text-green-600 mr-2"></i>
+                                    Basis Data
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-mobile-alt text-green-600 mr-2"></i>
+                                    Teknologi Mobile
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-cloud text-green-600 mr-2"></i>
+                                    Cloud Computing
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-robot text-green-600 mr-2"></i>
+                                    Internet of Things
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                                    Manajemen Proyek IT
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-xl p-8 shadow-lg animate-slideUp">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-tools text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Fasilitas</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-purple-600 mt-1 mr-2"></i>
+                                Laboratorium Jaringan Komputer
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-purple-600 mt-1 mr-2"></i>
+                                Laboratorium Server dan Database
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-purple-600 mt-1 mr-2"></i>
+                                Laboratorium Pemrograman
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-purple-600 mt-1 mr-2"></i>
+                                Peralatan Cisco dan Mikrotik
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg animate-slideUp" style="animation-delay: 0.2s;">
+                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-briefcase text-orange-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Peluang Karir</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-orange-600 mt-1 mr-2"></i>
+                                Network Administrator
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-orange-600 mt-1 mr-2"></i>
+                                System Administrator
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-orange-600 mt-1 mr-2"></i>
+                                IT Support Specialist
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-orange-600 mt-1 mr-2"></i>
+                                Cyber Security Analyst
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Album Page -->
+    <div id="albumPage" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center mb-8 animate-fadeIn">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Album Aktivitas</h1>
+                <p class="text-xl text-gray-600">Dokumentasi kegiatan dan pencapaian TJKT</p>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <button onclick="filterAlbum('all')" class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-images mr-2"></i>Semua
+                    </button>
+                    <button onclick="filterAlbum('workshop')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-tools mr-2"></i>Workshop
+                    </button>
+                    <button onclick="filterAlbum('competition')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-trophy mr-2"></i>Kompetisi
+                    </button>
+                    <button onclick="filterAlbum('lab')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-flask mr-2"></i>Lab
+                    </button>
+                </div>
+            </div>
+
+            <div class="gallery-grid" id="photoGallery">
+                <!-- Gallery items will be populated by JavaScript -->
+            </div>
+
+            <!-- Removed upload button as per request -->
+            <!-- <div class="mt-8 text-center">
+                <button onclick="uploadPhoto()" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Tambah Foto
+                </button>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Video Page -->
+    <div id="videoPage" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center mb-8 animate-fadeIn">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Video Aktivitas</h1>
+                <p class="text-xl text-gray-600">Dokumentasi video kegiatan dan pembelajaran TJKT</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl p-6 shadow-lg">
+                        <div class="video-container mb-4">
+                            <video id="mainVideo" controls playsinline webkit-playsinline class="w-full h-full">
+                                <source src="" type="video/mp4"> <!-- Source will be set by JS -->
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <h3 id="videoTitle" class="text-xl font-bold text-gray-800 mb-2"></h3> <!-- Title will be set by JS -->
+                        <p id="videoDescription" class="text-gray-600"></p> <!-- Description will be set by JS -->
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Playlist Video</h3>
+                        <div class="video-playlist space-y-2" id="videoPlaylist">
+                            <!-- Video playlist will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Removed upload button as per request -->
+            <!-- <div class="mt-8 text-center">
+                <button onclick="uploadVideo()" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Tambah Video
+                </button>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profilePage" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8 animate-fadeIn">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-4">Profile Saya</h1>
+                    <p class="text-xl text-gray-600">Kelola informasi profile Anda</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-lg">
+                    <div class="text-center mb-8">
+                        <div class="relative inline-block">
+                            <img id="profileImage" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByeD0iNjAiIGZpbGw9IiNFNUU3RUIiLz4KPHBhdGggZD0iTTYwIDMwQzY5LjQgMzAgNzcgMzcuNiA3NyA0N0M3NyA1Ni40IDY5LjQgNjQgNjAgNjRDNTAuNiA2NCA0MyA1Ni40IDQzIDQ3QzQzIDM3LjYgNTAuNiAzMCA2MCAzMFoiIGZpbGw9IiM5Q0EzQUYiLz4KPHBhdGg+Cg==" alt="Profile" class="profile-img">
+                            <button onclick="changeProfilePicture()" class="absolute bottom-0 right-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-camera text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="profileForm" onsubmit="saveProfile(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Nama Lengkap</label>
+                                <input type="text" id="fullName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Umur</label>
+                                <input type="number" id="age" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <label class="block text-gray-700 text-sm font-medium mb-2">Bio</label>
+                            <textarea id="bio" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ceritakan sedikit tentang diri Anda..."></textarea>
+                        </div>
+
+                        <div class="mt-8 flex justify-center">
+                            <button type="submit" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-save mr-2"></i>Simpan Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Page -->
+    <div id="statisticsPage" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center mb-8 animate-fadeIn">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Statistik TJKT</h1>
+                <p class="text-xl text-gray-600">Data dan analisis program studi</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Jumlah Mahasiswa per Angkatan</h3>
+                    <div style="height: 400px;">
+                        <canvas id="studentsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Tingkat Kelulusan</h3>
+                    <div style="height: 400px;">
+                        <canvas id="graduationChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Sertifikasi yang Diperoleh</h3>
+                    <div style="height: 400px;">
+                        <canvas id="certificationsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Penyerapan Lulusan</h3>
+                    <div style="height: 400px;">
+                        <canvas id="employmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Officer Page -->
+    <div id="officerPage" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center mb-8 animate-fadeIn">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Pengurus TJKT</h1>
+                <p class="text-xl text-gray-600">Tim pengurus dan koordinator program studi</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover text-center animate-slideUp">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-tie text-blue-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Dr. Ahmad Nugroho</h3>
+                    <p class="text-blue-600 font-medium mb-2">Ketua Program Studi</p>
+                    <p class="text-gray-600 text-sm mb-4">Ahli dalam bidang jaringan komputer dan sistem terdistribusi</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                        <a href="#" class="text-blue-600 hover:text-blue-800">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover text-center animate-slideUp" style="animation-delay: 0.1s;">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-graduate text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Prof. Siti Rahma</h3>
+                    <p class="text-green-600 font-medium mb-2">Wakil Ketua Program Studi</p>
+                    <p class="text-gray-600 text-sm mb-4">Spesialis dalam keamanan jaringan dan kriptografi</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-green-600 hover:text-green-800">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="text-green-600 hover:text-green-800">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                        <a href="#" class="text-green-600 hover:text-green-800">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover text-center animate-slideUp" style="animation-delay: 0.2s;">
+                    <div class="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chalkboard-teacher text-purple-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Ir. Budi Santoso</h3>
+                    <p class="text-purple-600 font-medium mb-2">Koordinator Laboratorium</p>
+                    <p class="text-gray-600 text-sm mb-4">Mengelola laboratorium jaringan dan infrastruktur IT</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-purple-600 hover:text-purple-800">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="text-purple-600 hover:text-purple-800">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                        <a href="#" class="text-purple-600 hover:text-purple-800">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover text-center animate-slideUp" style="animation-delay: 0.3s;">
+                    <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-check text-orange-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Dra. Maya Sari</h3>
+                    <p class="text-orange-600 font-medium mb-2">Sekretaris Program Studi</p>
+                    <p class="text-gray-600 text-sm mb-4">Mengelola administrasi dan keuangan program studi</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-orange-600 hover:text-orange-800">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="text-orange-600 hover:text-orange-800">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                        <a href="#" class="text-orange-600 hover:text-orange-800">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover text-center animate-slideUp" style="animation-delay: 0.4s;">
+                    <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-friends text-red-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">M.Kom. Andi Pratama</h3>
+                    <p class="text-red-600 font-medium mb-2">Koordinator Kemahasiswaan</p>
+                    <p class="text-gray-600 text-sm mb-4">Membina aktivitas dan prestasi mahasiswa</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                        <a href="#" class="text-red-600 hover:text-red-800">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover text-center animate-slideUp" style="animation-delay: 0.5s;">
+                    <div class="w-24 h-24 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-briefcase text-teal-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">S.T. Rini Wulandari</h3>
+                    <p class="text-teal-600 font-medium mb-2">Koordinator Magang</p>
+                    <p class="text-gray-600 text-sm mb-4">Mengelola program magang dan kerjasama industri</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-teal-600 hover:text-teal-800">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="text-teal-600 hover:text-teal-800">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                        <a href="#" class="text-teal-600 hover:text-teal-800">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Page -->
+    <div id="memberPage" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center mb-8 animate-fadeIn">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Anggota TJKT</h1>
+                <p class="text-xl text-gray-600">Mahasiswa dan alumni program studi</p>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <button onclick="filterMembers('all')" class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-users mr-2"></i>Semua
+                    </button>
+                    <button onclick="filterMembers('2024')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-calendar mr-2"></i>2024
+                    </button>
+                    <button onclick="filterMembers('2023')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-calendar mr-2"></i>2023
+                    </button>
+                    <button onclick="filterMembers('2022')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-calendar mr-2"></i>2022
+                    </button>
+                    <button onclick="filterMembers('alumni')" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-graduation-cap mr-2"></i>Alumni
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="membersList">
+                <!-- Members will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let currentPage = 'login';
+        let photoGallery = [];
+        let videoPlaylist = [];
+        let membersList = [];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            initializeData();
+            setupEventListeners();
+        });
+
+        function checkAuthStatus() {
+            const userData = localStorage.getItem('tjktUser');
+            if (userData) {
+                currentUser = JSON.parse(userData);
+                showMainApp();
+            } else {
+                showLoginPage();
+            }
+        }
+
+        function showLoginPage() {
+            document.getElementById('loginPage').classList.add('active');
+            document.querySelector('header').style.display = 'none';
+        }
+
+        function showMainApp() {
+            document.getElementById('loginPage').classList.remove('active');
+            document.querySelector('header').style.display = 'block';
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('userEmail').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            showPage('dashboard');
+        }
+
+        function switchTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            if (tab === 'login') {
+                loginTab.classList.add('border-white');
+                loginTab.classList.remove('text-opacity-60');
+                registerTab.classList.remove('border-white');
+                registerTab.classList.add('text-opacity-60');
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            } else {
+                registerTab.classList.add('border-white');
+                registerTab.classList.remove('text-opacity-60');
+                loginTab.classList.remove('border-white');
+                loginTab.classList.add('text-opacity-60');
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Simple validation
+            if (!email || !password) {
+                showToast('Email dan password harus diisi', 'error');
+                return;
+            }
+
+            // Simulate login
+            currentUser = { email: email, password: password };
+            localStorage.setItem('tjktUser', JSON.stringify(currentUser));
+            
+            showToast('Login berhasil!', 'success');
+            setTimeout(() => {
+                showMainApp();
+            }, 1000);
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validation
+            if (!email || !password || !confirmPassword) {
+                showToast('Semua field harus diisi', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showToast('Password tidak cocok', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showToast('Password minimal 6 karakter', 'error');
+                return;
+            }
+
+            // Simulate registration
+            currentUser = { email: email, password: password };
+            localStorage.setItem('tjktUser', JSON.stringify(currentUser));
+            
+            showToast('Registrasi berhasil!', 'success');
+            setTimeout(() => {
+                showMainApp();
+            }, 1000);
+        }
+
+        function logout() {
+            localStorage.removeItem('tjktUser');
+            currentUser = null;
+            showLoginPage();
+            showToast('Logout berhasil', 'success');
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageName + 'Page').classList.add('active');
+            currentPage = pageName;
+            
+            // Initialize page-specific content
+            if (pageName === 'dashboard') {
+                initializeDashboard();
+            } else if (pageName === 'album') {
+                initializeAlbum();
+            } else if (pageName === 'video') {
+                initializeVideo();
+            } else if (pageName === 'profile') {
+                initializeProfile();
+            } else if (pageName === 'statistics') {
+                initializeStatistics();
+            } else if (pageName === 'member') {
+                initializeMembers();
+            }
+            // Close sidebar if open on smaller screens
+            if (window.innerWidth < 1024 && document.getElementById('sidebar').classList.contains('active')) {
+                toggleSidebar();
+            }
+        }
+
+        function initializeDashboard() {
+            // Animate counters
+            animateCounter('totalStudents', 247);
+            animateCounter('graduationRate', 94, '%');
+            animateCounter('totalTeachers', 18);
+            animateCounter('totalCertificates', 156);
+        }
+
+        function animateCounter(elementId, target, suffix = '') {
+            const element = document.getElementById(elementId);
+            let current = 0;
+            const increment = target / 50;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current) + suffix;
+            }, 20);
+        }
+
+        function initializeData() {
+            // Initialize photo gallery with local paths
+            photoGallery = [
+                { id: 1, src: 'images/aktivitas1.png', title: 'Workshop Jaringan', category: 'workshop' },
+                { id: 2, src: 'images/aktivitas2.png', title: 'Kompetisi Programming', category: 'competition' },
+                { id: 3, src: 'images/aktivitas3.png', title: 'Praktikum Lab', category: 'lab' },
+                { id: 4, src: 'images/aktivitas4.png', title: 'Seminar Teknologi', category: 'workshop' },
+                { id: 5, src: 'images/aktivitas5.png', title: 'Hackathon', category: 'competition' },
+                { id: 6, src: 'images/aktivitas6.png', title: 'Konfigurasi Server', category: 'lab' },
+                // Add more photos here
+            ];
+
+            // Initialize video playlist with local paths
+            videoPlaylist = [
+                { id: 1, src: 'videos/video1.mp4', title: 'Workshop Jaringan Komputer', description: 'Dokumentasi workshop konfigurasi router dan switch menggunakan peralatan Cisco.' },
+                { id: 2, src: 'videos/video2.mp4', title: 'Kompetisi Programming', description: 'Highlight kompetisi programming tingkat nasional yang diikuti mahasiswa TJKT.' },
+                { id: 3, src: 'videos/video3.mp4', title: 'Praktikum Lab Network', description: 'Kegiatan praktikum di laboratorium jaringan komputer.' },
+                { id: 4, src: 'videos/video4.mp4', title: 'Seminar Cyber Security', description: 'Seminar tentang keamanan siber dan praktik terbaik.' },
+                // Add more videos here
+            ];
+
+            // Initialize members list
+            membersList = [
+                { id: 1, name: 'Ahmad Fauzi', year: '2024', status: 'active', email: 'ahmad.fauzi@tjkt.ac.id', specialty: 'Network Security' },
+                { id: 2, name: 'Siti Nurhaliza', year: '2024', status: 'active', email: 'siti.nurhaliza@tjkt.ac.id', specialty: 'Web Development' },
+                { id: 3, name: 'Budi Santoso', year: '2023', status: 'active', email: 'budi.santoso@tjkt.ac.id', specialty: 'Database Management' },
+                { id: 4, name: 'Rani Putri', year: '2023', status: 'active', email: 'rani.putri@tjkt.ac.id', specialty: 'Mobile Development' },
+                { id: 5, name: 'Dedi Kurniawan', year: '2022', status: 'active', email: 'dedi.kurniawan@tjkt.ac.id', specialty: 'System Administration' },
+                { id: 6, name: 'Maya Sari', year: '2022', status: 'active', email: 'maya.sari@tjkt.ac.id', specialty: 'Cloud Computing' },
+                { id: 7, name: 'Andi Pratama', year: '2021', status: 'alumni', email: 'andi.pratama@alumni.tjkt.ac.id', specialty: 'DevOps Engineer' },
+                { id: 8, name: 'Rini Wulandari', year: '2021', status: 'alumni', email: 'rini.wulandari@alumni.tjkt.ac.id', specialty: 'Network Administrator' }
+            ];
+        }
+
+        function initializeAlbum() {
+            const gallery = document.getElementById('photoGallery');
+            gallery.innerHTML = ''; // Clear existing items
+
+            photoGallery.forEach(photo => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item card-hover animate-fadeIn'; // Added animate-fadeIn for effect
+                item.setAttribute('data-category', photo.category);
+                item.innerHTML = `
+                    <img src="${photo.src}" alt="${photo.title}" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <p class="font-medium text-sm">${photo.title}</p>
+                    </div>
+                `;
+                item.onclick = () => openLightbox(photo.src);
+                gallery.appendChild(item);
+            });
+        }
+
+        function initializeVideo() {
+            const playlist = document.getElementById('videoPlaylist');
+            playlist.innerHTML = ''; // Clear existing items
+
+            // Set the first video as the main video by default
+            if (videoPlaylist.length > 0) {
+                playVideo(videoPlaylist[0], 0);
+            } else {
+                // Clear main video display if no videos
+                document.getElementById('mainVideo').src = '';
+                document.getElementById('videoTitle').textContent = 'No Video Available';
+                document.getElementById('videoDescription').textContent = 'Please add videos to the playlist.';
+            }
+
+            videoPlaylist.forEach((video, index) => {
+                const item = document.createElement('div');
+                item.className = `video-item ${index === 0 ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-16 h-12 bg-gray-200 rounded flex items-center justify-center overflow-hidden">
+                            <!-- You might want a thumbnail here instead of just an icon -->
+                            <i class="fas fa-play text-gray-400"></i> 
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800 text-sm">${video.title}</h4>
+                            <p class="text-xs text-gray-600">${video.description.substring(0, 50)}...</p>
+                        </div>
+                    </div>
+                `;
+                item.onclick = () => playVideo(video, index);
+                playlist.appendChild(item);
+            });
+        }
+
+        function initializeProfile() {
+            const profileData = localStorage.getItem('tjktProfile');
+            if (profileData) {
+                const profile = JSON.parse(profileData);
+                document.getElementById('fullName').value = profile.fullName || '';
+                document.getElementById('age').value = profile.age || '';
+                document.getElementById('bio').value = profile.bio || '';
+                if (profile.profileImage) {
+                    document.getElementById('profileImage').src = profile.profileImage;
+                }
+            }
+        }
+
+        function initializeStatistics() {
+            // Students Chart
+            const studentsCtx = document.getElementById('studentsChart').getContext('2d');
+            new Chart(studentsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024'],
+                    datasets: [{
+                        label: 'Jumlah Mahasiswa',
+                        data: [45, 52, 61, 58, 67],
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Graduation Chart
+            const graduationCtx = document.getElementById('graduationChart').getContext('2d');
+            new Chart(graduationCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024'],
+                    datasets: [{
+                        label: 'Tingkat Kelulusan (%)',
+                        data: [89, 92, 95, 94, 96],
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Certifications Chart
+            const certificationsCtx = document.getElementById('certificationsChart').getContext('2d');
+            new Chart(certificationsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Cisco CCNA', 'Mikrotik', 'CompTIA', 'Microsoft', 'Linux'],
+                    datasets: [{
+                        data: [45, 32, 28, 23, 18],
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(139, 92, 246, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Employment Chart
+            const employmentCtx = document.getElementById('employmentChart').getContext('2d');
+            new Chart(employmentCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Bekerja', 'Melanjutkan Studi', 'Wiraswasta', 'Mencari Kerja'],
+                    datasets: [{
+                        data: [65, 20, 10, 5],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(239, 68, 68, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function initializeMembers() {
+            renderMembers(membersList);
+        }
+
+        function renderMembers(members) {
+            const membersList = document.getElementById('membersList');
+            membersList.innerHTML = '';
+
+            members.forEach(member => {
+                const memberCard = document.createElement('div');
+                memberCard.className = 'bg-white rounded-xl p-6 shadow-lg card-hover text-center animate-slideUp';
+                memberCard.innerHTML = `
+                    <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user text-gray-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">${member.name}</h3>
+                    <p class="text-sm text-gray-600 mb-1">Angkatan ${member.year}</p>
+                    <p class="text-sm text-blue-600 mb-2">${member.specialty}</p>
+                    <div class="flex justify-center space-x-2">
+                        <span class="px-3 py-1 text-xs rounded-full ${member.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}">
+                            ${member.status === 'active' ? 'Aktif' : 'Alumni'}
+                        </span>
+                    </div>
+                `;
+                membersList.appendChild(memberCard);
+            });
+        }
+
+        function filterAlbum(category) {
+            const buttons = document.querySelectorAll('#albumPage button');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+
+            // Find the button that was clicked using event.target
+            const clickedButton = event.target.closest('button');
+            if (clickedButton) {
+                clickedButton.classList.remove('bg-gray-200', 'text-gray-700');
+                clickedButton.classList.add('bg-blue-600', 'text-white');
+            }
+
+
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function filterMembers(filter) {
+            const buttons = document.querySelectorAll('#memberPage button');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+
+            // Find the button that was clicked using event.target
+            const clickedButton = event.target.closest('button');
+            if (clickedButton) {
+                clickedButton.classList.remove('bg-gray-200', 'text-gray-700');
+                clickedButton.classList.add('bg-blue-600', 'text-white');
+            }
+
+            let filteredMembers = membersList;
+            
+            if (filter === 'alumni') {
+                filteredMembers = membersList.filter(member => member.status === 'alumni');
+            } else if (filter !== 'all') {
+                filteredMembers = membersList.filter(member => member.year === filter);
+            }
+
+            renderMembers(filteredMembers);
+        }
+
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function playVideo(video, index) {
+            const mainVideo = document.getElementById('mainVideo');
+            const videoTitle = document.getElementById('videoTitle');
+            const videoDescription = document.getElementById('videoDescription');
+            
+            mainVideo.src = video.src;
+            videoTitle.textContent = video.title;
+            videoDescription.textContent = video.description;
+            mainVideo.load(); // Reload video for new source
+            mainVideo.play(); // Auto-play new video
+
+            // Update playlist active state
+            document.querySelectorAll('.video-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.video-item')[index].classList.add('active');
+        }
+
+        function changeProfilePicture() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('profileImage').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function saveProfile(event) {
+            event.preventDefault();
+            
+            const profileData = {
+                fullName: document.getElementById('fullName').value,
+                age: document.getElementById('age').value,
+                bio: document.getElementById('bio').value,
+                profileImage: document.getElementById('profileImage').src
+            };
+            
+            localStorage.setItem('tjktProfile', JSON.stringify(profileData));
+            showToast('Profile berhasil disimpan!', 'success');
+        }
+
+        // Removed uploadPhoto and uploadVideo functions as they are no longer needed
+        // function uploadPhoto() {
+        //     const input = document.createElement('input');
+        //     input.type = 'file';
+        //     input.accept = 'image/*';
+        //     input.multiple = true;
+        //     input.onchange = function(event) {
+        //         const files = event.target.files;
+        //         if (files.length > 0) {
+        //             showToast(`${files.length} foto berhasil ditambahkan!`, 'success');
+        //             // In a real app, you would upload the files here
+        //         }
+        //     };
+        //     input.click();
+        // }
+
+        // function uploadVideo() {
+        //     const input = document.createElement('input');
+        //     input.type = 'file';
+        //     input.accept = 'video/*';
+        //     input.onchange = function(event) {
+        //         const file = event.target.files[0];
+        //         if (file) {
+        //             showToast('Video berhasil ditambahkan!', 'success');
+        //             // In a real app, you would upload the file here
+        //         }
+        //     };
+        //     input.click();
+        // }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function setupEventListeners() {
+            // Close lightbox on click outside
+            document.getElementById('lightbox').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeLightbox();
+                }
+            });
+
+            // Close sidebar when clicking on nav links
+            document.querySelectorAll('#sidebar a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 1024) {
+                        toggleSidebar();
+                    }
+                });
+            });
+        }
+
+        // Add smooth scrolling and other enhancements
+        document.addEventListener('scroll', function() {
+            const elements = document.querySelectorAll('.animate-slideUp');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('animate-slideUp');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
