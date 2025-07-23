@@ -1,1 +1,157 @@
+/* Responsive Styles */
 
+/* Mobile Navigation */
+@media (max-width: 992px) {
+    .main-nav .nav-list {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--dark-bg);
+        position: absolute;
+        top: 70px; /* Below header */
+        left: 0;
+        padding: 20px 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
+    }
+
+    .main-nav .nav-list.active {
+        display: flex;
+        max-height: 500px; /* Sufficient height to show all links */
+    }
+
+    .main-nav .nav-list li {
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .main-nav .nav-list li a {
+        padding: 12px 0;
+        width: 100%;
+        display: block;
+        border-radius: 0;
+    }
+
+    .main-nav .nav-list li a.active {
+        background-color: var(--primary-color);
+        border-bottom: 2px solid var(--accent-color);
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .logo-container {
+        gap: 10px;
+    }
+
+    .logo-jurusan, .logo-sekolah {
+        height: 40px;
+    }
+}
+
+
+/* General adjustments for smaller screens */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 1rem 1.5rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .hero {
+        padding: 80px 15px;
+        min-height: calc(100vh - 150px);
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+
+    section {
+        padding: 30px 15px;
+        margin-bottom: 30px;
+    }
+
+    .about-grid, .curriculum-grid, .activity-gallery, .team-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .gallery-item img {
+        height: 180px;
+    }
+
+    .contact-info p {
+        flex-direction: column; /* Stack icon and text */
+        gap: 5px;
+        margin-bottom: 15px;
+    }
+
+    .popup-content {
+        padding: 30px;
+    }
+
+    .login-popup h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header {
+        flex-direction: row; /* Keep logos and toggle inline */
+        justify-content: space-between;
+        padding: 0.8rem 1rem;
+    }
+
+    .logo-container {
+        gap: 8px;
+    }
+
+    .logo-jurusan, .logo-sekolah {
+        height: 35px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    .hero {
+        padding: 60px 15px;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .curriculum-item h3::before {
+        font-size: 1.3em;
+    }
+}
